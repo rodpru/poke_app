@@ -1,4 +1,4 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import React from "react";
 
 export default function Pagination({
@@ -24,7 +24,14 @@ export default function Pagination({
             key={page}
             onClick={() => setCurrentPage(page)}
           >
-            {page}
+            <Typography
+              sx={{
+                color: currentPage === page ? "black" : "white",
+                fontSize: "20px",
+              }}
+            >
+              {page}
+            </Typography>
           </Button>
         );
       })}

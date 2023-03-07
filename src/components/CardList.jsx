@@ -12,7 +12,7 @@ export default function CardList({ children }) {
         minHeight: "300px",
         gap: "20px",
         justifyContent: "center",
-        p: "40px 20px",
+        p: "60px 40px",
         borderRadius: "10px",
         position: "relative",
       }}
