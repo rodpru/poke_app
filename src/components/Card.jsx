@@ -1,4 +1,9 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromFavourites,
+  setFavourites,
+} from "../store/slices/favouritesSlice";
 import CardComponent from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -7,9 +12,42 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
+import StarIcon from "@mui/icons-material/Star";
 
 export default function Card({ pokemon }) {
-  console.log(pokemon, "card");
+  const favourites = useSelector((state) => state.favourites.value);
+  const dispatch = useDispatch();
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    let itemsFromLS = JSON.parse(localStorage.getItem("favourites"));
+    if (favourites.length) {
+      favourites.map((item) => {
+        if (item === pokemon) setActive(true);
+      });
+    } else if (itemsFromLS) {
+      console.log(itemsFromLS);
+      itemsFromLS.map((item) => {
+        if (item === pokemon) setActive(true);
+      });
+    } else setActive(false);
+  }, [active]);
+  const handleFavourites = (pokemon) => {
+    if (!favourites.length) dispatch(setFavourites(pokemon));
+    if (favourites.length) {
+      favourites.map((item) => {
+        console.log(item);
+        console.log(pokemon);
+        if (item === pokemon) {
+          console.log("entrou no if");
+          dispatch(removeFromFavourites(pokemon));
+        } else {
+          dispatch(setFavourites(pokemon));
+        }
+      });
+    }
+    setActive(!active);
+  };
+
   return (
     <CardComponent sx={{ width: { xs: "100%", md: "30%" } }}>
       <CardMedia
@@ -30,12 +68,24 @@ export default function Card({ pokemon }) {
           <Typography>Specie: {pokemon.species.name}</Typography>
         </Box>
       </CardContent>
-      <CardActions>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          px: "10%",
+          alignItems: "center",
+        }}
+      >
         <Button size="small">Saber Mais</Button>
-        <Button size="small">
-          <StarBorderOutlinedIcon />
-        </Button>
-      </CardActions>
+
+        {active ? (
+          <StarIcon onClick={() => handleFavourites(pokemon.name)} />
+        ) : (
+          <StarBorderOutlinedIcon
+            onClick={() => handleFavourites(pokemon.name)}
+          />
+        )}
+      </Box>
     </CardComponent>
   );
 }
