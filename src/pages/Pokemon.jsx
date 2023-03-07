@@ -49,7 +49,6 @@ export default function Pokemon() {
     //When there are no items on LocalStorage
     if (!itemsFromLS || itemsFromLS.length < 1) {
       let arrToSend = [...removedDuplicates, pokemon];
-      console.log(arrToSend, "!items arrTosend");
       localStorage.removeItem("favourites");
       dispatch(setFavourites(arrToSend));
       localStorage.setItem("favourites", JSON.stringify(arrToSend));
@@ -57,14 +56,11 @@ export default function Pokemon() {
       return;
     } else {
       //When there are items on LocalStorage
-
       let localStorageArr = [...new Set(itemsFromLS)];
       localStorageArr.map((item) => {
         if (item === pokemon) {
           let index = localStorageArr.indexOf(pokemon);
-          console.log(index, "indexof");
           localStorageArr.splice(index, 1);
-          console.log(localStorageArr, "localStorageArr");
           localStorage.removeItem("favourites");
           localStorage.setItem("favourites", JSON.stringify(localStorageArr));
           dispatch(removeFromFavourites(localStorageArr));
