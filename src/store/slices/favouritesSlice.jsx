@@ -9,17 +9,17 @@ export const favouritesSlice = createSlice({
   initialState,
   reducers: {
     setFavourites: (state, action) => {
-      state.value = [...state.value, action.payload];
-      localStorage.setItem("favourites", JSON.stringify(state.value));
+      state.value = action.payload;
     },
     removeFromFavourites: (state, action) => {
-      let newArr = [...state.value];
-      console.log(newArr, "array redux");
+      state.value = action.payload;
+      /*       let newArr = [...state.value];
       let index = newArr.indexOf(action.payload);
       newArr.splice(index, 1);
       state.value = newArr;
+      console.log(newArr, "removed");
       localStorage.removeItem("favourites");
-      localStorage.setItem("favourites", JSON.stringify(state.value));
+      localStorage.setItem("favourites", JSON.stringify(state.value)); */
     },
   },
 });

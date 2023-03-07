@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  removeFromFavourites,
-  setFavourites,
-} from "../store/slices/favouritesSlice";
+
 import CardComponent from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
@@ -13,39 +9,45 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import StarIcon from "@mui/icons-material/Star";
+import { useNavigate } from "react-router";
+import { element } from "prop-types";
 
 export default function Card({ pokemon }) {
   const favourites = useSelector((state) => state.favourites.value);
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [active, setActive] = useState(false);
+
+  //Check if favourites exits
   useEffect(() => {
     let itemsFromLS = JSON.parse(localStorage.getItem("favourites"));
-    if (favourites.length) {
-      favourites.map((item) => {
-        if (item === pokemon) setActive(true);
-      });
-    } else if (itemsFromLS) {
-      console.log(itemsFromLS);
-      itemsFromLS.map((item) => {
-        if (item === pokemon) setActive(true);
-      });
-    } else setActive(false);
-  }, [active]);
-  const handleFavourites = (pokemon) => {
-    if (!favourites.length) dispatch(setFavourites(pokemon));
-    if (favourites.length) {
-      favourites.map((item) => {
-        console.log(item);
-        console.log(pokemon);
-        if (item === pokemon) {
-          console.log("entrou no if");
-          dispatch(removeFromFavourites(pokemon));
-        } else {
-          dispatch(setFavourites(pokemon));
+    if (!itemsFromLS && itemsFromLS < 1) {
+      setActive(false);
+      return;
+    } else {
+      itemsFromLS.map((element) => {
+        if (element === pokemon.name) {
+          setActive(true);
+          return;
         }
       });
     }
-    setActive(!active);
+    /*     if (favourites.length) {
+      favourites.map((item) => {
+        if (item === pokemon.name) setActive(true);
+      });
+    }
+    if (itemsFromLS) {
+      console.log(itemsFromLS, "card");
+      itemsFromLS.map((item) => {
+        console.log(item, "item");
+        if (item === pokemon.name) setActive(true);
+      });
+    } */
+  }, [active, favourites]);
+
+  //navigate to individual pokemon page
+  const handleNavigation = () => {
+    navigate(`/pokemon/${pokemon.name}`);
   };
 
   return (
@@ -76,15 +78,11 @@ export default function Card({ pokemon }) {
           alignItems: "center",
         }}
       >
-        <Button size="small">Saber Mais</Button>
+        <Button size="small" onClick={handleNavigation}>
+          Saber Mais
+        </Button>
 
-        {active ? (
-          <StarIcon onClick={() => handleFavourites(pokemon.name)} />
-        ) : (
-          <StarBorderOutlinedIcon
-            onClick={() => handleFavourites(pokemon.name)}
-          />
-        )}
+        {active ? <StarIcon /> : <StarBorderOutlinedIcon />}
       </Box>
     </CardComponent>
   );

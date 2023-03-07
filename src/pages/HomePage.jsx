@@ -4,8 +4,12 @@ import BgImg from "../assets/images/wallpaper.jpg";
 import CardList from "../components/CardList";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
+import { setAllPokemons } from "../store/slices/pokeListSlice";
+import { useDispatch } from "react-redux";
+import Layout from "../components/common/Layout";
 
 export default function HomePage() {
+  const dispatch = useDispatch();
   const [pokemonsList, setPokemonsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage, setCardsPerPage] = useState(6);
@@ -29,6 +33,7 @@ export default function HomePage() {
       .then((data) => {
         //Set the state with pokemon full details
         setPokemonsList(data);
+        //dispatch(setAllPokemons(data));
       });
   };
   useEffect(() => {
@@ -43,25 +48,28 @@ export default function HomePage() {
         display: "flex",
         alignItems: "center",
         justifyContent: { xs: "center", md: "start" },
+        position: "relative",
       }}
     >
-      {limitedList.length < 1 ? (
-        <CardList>
-          <Typography variant="h2">Loading...</Typography>
-        </CardList>
-      ) : (
-        <CardList>
-          {limitedList.map((pokemon) => {
-            return <Card key={pokemon.name} pokemon={pokemon} />;
-          })}
-          <Pagination
-            totalCards={pokemonsList.length}
-            cardsPerPage={cardsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          />
-        </CardList>
-      )}
+      <Layout>
+        {limitedList.length < 1 ? (
+          <CardList>
+            <Typography variant="h2">Loading...</Typography>
+          </CardList>
+        ) : (
+          <CardList>
+            {limitedList.map((pokemon) => {
+              return <Card key={pokemon.name} pokemon={pokemon} />;
+            })}
+            <Pagination
+              totalCards={pokemonsList.length}
+              cardsPerPage={cardsPerPage}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </CardList>
+        )}
+      </Layout>
     </Box>
   );
 }

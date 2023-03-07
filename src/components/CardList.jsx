@@ -15,6 +15,7 @@ export default function CardList({ children }) {
         p: "60px 40px",
         borderRadius: "10px",
         position: "relative",
+        mt: { xs: "100px", sm: "none" },
       }}
     >
       {children}
