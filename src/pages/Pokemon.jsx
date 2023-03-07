@@ -16,7 +16,7 @@ export default function Pokemon() {
   const [pokemon, setPokemon] = useState(null);
   const [active, setActive] = useState(false);
 
-  //gets pokemon from API
+  //gets individual pokemon from API
   useEffect(() => {
     let urlParam = window.location.href.split("/").pop();
     try {
@@ -46,8 +46,8 @@ export default function Pokemon() {
     let stateToChange = [...favourites];
     let removedDuplicates = [...new Set(stateToChange)];
     let itemsFromLS = JSON.parse(localStorage.getItem("favourites"));
+    //When there are no items on LocalStorage
     if (!itemsFromLS || itemsFromLS.length < 1) {
-      console.log("entrou no !items");
       let arrToSend = [...removedDuplicates, pokemon];
       console.log(arrToSend, "!items arrTosend");
       localStorage.removeItem("favourites");
@@ -56,7 +56,8 @@ export default function Pokemon() {
       setActive(!active);
       return;
     } else {
-      console.log("entrou no items");
+      //When there are items on LocalStorage
+
       let localStorageArr = [...new Set(itemsFromLS)];
       localStorageArr.map((item) => {
         if (item === pokemon) {

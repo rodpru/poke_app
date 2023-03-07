@@ -13,13 +13,6 @@ export const favouritesSlice = createSlice({
     },
     removeFromFavourites: (state, action) => {
       state.value = action.payload;
-      /*       let newArr = [...state.value];
-      let index = newArr.indexOf(action.payload);
-      newArr.splice(index, 1);
-      state.value = newArr;
-      console.log(newArr, "removed");
-      localStorage.removeItem("favourites");
-      localStorage.setItem("favourites", JSON.stringify(state.value)); */
     },
   },
 });

@@ -31,18 +31,6 @@ export default function Card({ pokemon }) {
         }
       });
     }
-    /*     if (favourites.length) {
-      favourites.map((item) => {
-        if (item === pokemon.name) setActive(true);
-      });
-    }
-    if (itemsFromLS) {
-      console.log(itemsFromLS, "card");
-      itemsFromLS.map((item) => {
-        console.log(item, "item");
-        if (item === pokemon.name) setActive(true);
-      });
-    } */
   }, [active, favourites]);
 
   //navigate to individual pokemon page
